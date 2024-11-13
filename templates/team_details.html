@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-gray-800">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold mb-4">Session Details</h1>
+        <p><strong>Sport Name:</strong> {{ session.sport_name }}</p>
+        <p><strong>Venue:</strong> {{ session.venue }}</p>
+        <p><strong>Time:</strong> {{ session.time }}</p>
+        <p><strong>Number of Teams:</strong> {{ session.number_of_teams }}</p>
+
+        <h2 class="text-xl font-bold mt-8 mb-4">Teams</h2>
+        <div class="team-container">
+            {% for team in teams %}
+            <div class="team mb-4 p-4 border border-gray-300 rounded-md">
+                <h3 class="text-lg font-semibold mb-2">{{ team.name }}</h3>
+                <ul>
+                    {% for player in team.players.all %}
+                    <li>{{ player.name }} - {{ player.player_type.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

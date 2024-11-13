@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sports-Guide App</title>
+    <link rel="icon" href="/static/icon.png" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background: linear-gradient(to right, #3b82f6, #4f46e5);
+        color: #333;
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .fade-in-section {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 1s ease, transform 1s ease;
+      }
+
+      .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .message-container,
+      .header,
+      .navbar,
+      .form-container,
+      .table-container {
+        max-width: 800px;
+        margin: 20px 0;
+        width: 90%;
+        transition: opacity 1s ease, transform 1s ease;
+      }
+
+      .header {
+        padding: 15px 20px;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        margin-bottom: 20px;
+        border-radius: 8px;
+      }
+
+      .navbar,
+      .form-container,
+      .table-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .navbar a {
+        color: #1f2937;
+        font-weight: 500;
+        margin: 0 10px;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .navbar a:hover {
+        color: #3b82f6;
+      }
+
+      .form-container p {
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .form-container input,
+      .form-container button {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        outline: none;
+        transition: border 0.3s;
+      }
+
+      .form-container input:focus,
+      .form-container button:hover {
+        border-color: #3b82f6;
+      }
+
+      .form-container button {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .form-container button:hover {
+        background-color: #2563eb;
+      }
+
+      .table-container h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .table-container table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table-container th,
+      .table-container td {
+        padding: 10px;
+        border: 1px solid #e5e7eb;
+      }
+
+      .table-container th {
+        background-color: #f3f4f6;
+        text-align: left;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        color: #6b7280;
+      }
+
+      .table-container td {
+        background-color: white;
+        color: #1f2937;
+      }
+
+      .table-container td a {
+        color: #3b82f6;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .table-container td a:hover {
+        color: #2563eb;
+      }
+
+      .table-container button {
+        background-color: #ef4444;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .table-container button:hover {
+        background-color: #dc2626;
+      }
+
+      @media (min-width: 640px) {
+        .header {
+          padding: 20px;
+        }
+        .navbar a {
+          margin: 0 20px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .header {
+          padding: 30px;
+        }
+        .message-container,
+        .header,
+        .navbar,
+        .form-container,
+        .table-container {
+          width: 80%;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .message-container,
+        .header,
+        .navbar,
+        .form-container,
+        .table-container {
+          width: 70%;
+        }
+      }
+
+      @media (min-width: 1280px) {
+        .message-container,
+        .header,
+        .navbar,
+        .form-container,
+        .table-container {
+          width: 60%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Display messages -->
+    <div class="message-container fade-in-section">
+      {% for message in messages %}
+      <div
+        class="alert alert-{{ message.tags }} alert-dismissible fade show bg-gray-100 p-4 rounded shadow"
+        role="alert">
+        <strong>Message:</strong> {{ message }}
+        <button type="button" class="close text-gray-800" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Header -->
+    <div class="header fade-in-section">
+      <h1 class="text-3xl font-bold">
+        Welcome {{ fname }}! You are now an Admin. You can create a sport, delete a sport, create a
+        session.
+      </h1>
+    </div>
+
+    <!-- Navbar -->
+    <div class="navbar fade-in-section">
+      <div class="flex space-x-4">
+        <a href="/report" class="text-gray-800">Reports</a>
+        <a href="/mysession" class="text-gray-800">My sessions</a>
+      </div>
+      <div class="flex space-x-4">
+        <a href="/signout" class="text-gray-800">Sign Out</a>
+        <a href="/player" class="text-gray-800">Continue as a Player</a>
+      </div>
+    </div>
+
+    <!-- Create Sport Form -->
+    <div class="form-container fade-in-section">
+      <form action="/get_sports" method="post" class="space-y-4">
+        {% csrf_token %}
+        <p>Want to create a sport?</p>
+        <input
+          type="number"
+          name="id"
+          placeholder="Enter the ID"
+          required />
+        <input
+          type="text"
+          name="sport_name"
+          placeholder="Enter the sport name!"
+          required />
+        <button type="submit">Create</button>
+      </form>
+    </div>
+
+    <!-- Created Sports List -->
+    <div class="table-container fade-in-section">
+      <h2>Created Sports</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full rounded-md overflow-hidden">
+          <thead class="bg-gray-200">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sport in csports %}
+            <tr class="hover:bg-gray-100">
+              <td>{{ sport.id }}</td>
+              <td>
+                <a href="{% url 'createsession' sport.id sport.sport_name %}">{{ sport.sport_name }}</a>
+              </td>
+              <td>
+                <form action="{% url 'delete_sport' sport.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="3" class="text-center text-gray-500">
+                No sports created yet
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const faders = document.querySelectorAll(".fade-in-section");
+        const appearOptions = {
+          threshold: 0.15,
+          rootMargin: "0px 0px -50px 0px",
+        };
+
+        const appearOnScroll = new IntersectionObserver(function (entries, appearOnScroll) {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) {
+              return;
+            } else {
+              entry.target.classList.add("is-visible");
+              appearOnScroll.unobserve(entry.target);
+            }
+          });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+          appearOnScroll.observe(fader);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/icon.png" type="image/x-icon" />
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <title>Welcome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(to right, #3b82f6, #4f46e5);
+        overflow: hidden;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        padding: 20px;
+      }
+
+      .content-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(15px);
+        border-radius: 12px;
+        padding: 40px 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .content-wrapper h1,
+      .content-wrapper p {
+        animation: fadeIn 1s ease-out forwards;
+        opacity: 0;
+        color: #1f2937; /* Darker text color */
+      }
+
+      .content-wrapper h1 {
+        animation-delay: 0.5s;
+      }
+
+      .content-wrapper p {
+        animation-delay: 1s;
+      }
+
+      .content-wrapper .roles a {
+        display: inline-block;
+        margin: 10px;
+        padding: 12px 24px;
+        border-radius: 8px;
+        background: #3b82f6;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        animation: fadeInUp 1s ease-out forwards;
+        opacity: 0;
+      }
+
+      .content-wrapper .roles a:hover {
+        background: #2563eb;
+        transform: translateY(-5px);
+      }
+
+      .content-wrapper .roles a:nth-child(1) {
+        animation-delay: 1.5s;
+      }
+
+      .content-wrapper .roles a:nth-child(2) {
+        animation-delay: 2s;
+      }
+
+      .sign-out-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 8px;
+        background: #ef4444;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        z-index: 100;
+      }
+
+      .sign-out-button:hover {
+        background: #dc2626;
+        transform: translateY(-5px);
+      }
+
+      .message-alert {
+        animation: fadeIn 1s ease-out forwards;
+        opacity: 0;
+        margin-bottom: 20px;
+      }
+
+      .message-alert strong {
+        display: block;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+      }
+
+      /* Define keyframes for animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a href="/signout" class="sign-out-button">Sign Out</a>
+
+    <div class="content-wrapper">
+      {% for message in messages %}
+      <div
+        class="message-alert alert alert-{{ message.tags }} alert-dismissible fade show"
+        role="alert">
+        <strong>Message:</strong> {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %}
+
+      <h1 class="text-4xl font-bold mb-5">Welcome {{fname}}!</h1>
+      <p class="text-lg mb-4">Please select your role:</p>
+
+      <div class="roles">
+        {% if user.is_staff %}
+        <a href="/organizor" class="px-5 py-2 font-medium transition-all duration-300"> Manager </a>
+        <a href="/player" class="px-5 py-2 font-medium transition-all duration-300"> Player </a>
+        {% else %}
+        <a href="/player" class="px-5 py-2 font-medium transition-all duration-300"> Player </a>
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
